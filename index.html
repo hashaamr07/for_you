@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>I'm Sorry 💐</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: linear-gradient(135deg, #ffd6e0, #ffe6f0);
+      padding: 20px;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: white;
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      animation: fadeIn 0.6s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hidden { display: none; }
+
+    button {
+      margin-top: 20px;
+      padding: 12px 22px;
+      border: none;
+      background: #ff4d6d;
+      color: white;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      background: #ff3355;
+    }
+
+    textarea {
+      width: 100%;
+      height: 100px;
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+
+    img { width: 150px; animation: float 2s infinite ease-in-out;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .heart {
+      position: fixed;
+      bottom: -20px;
+      font-size: 20px;
+      animation: rise 4s linear infinite;
+    }
+
+    @keyframes rise {
+      to {
+        transform: translateY(-110vh);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- STEP 1 -->
+<div class="container" id="step1">
+  <img src="https://media.tenor.com/Wy9x2eK4UAoAAAAj/good-morning-beautiful.gif" alt="cartoon giving flowers">
+  <p id="smallNote"></p>
+  <button onclick="nextStep(1)">Please read this...</button>
+</div>
+
+<!-- STEP 2 -->
+<div class="container hidden" id="step2">
+  <h2>💌</h2>
+  <p id="bigNote"></p>
+  <button onclick="nextStep(2)">I still have more to say...</button>
+</div>
+
+<!-- STEP 3 -->
+<div class="container hidden" id="step3">
+  <h2>💖</h2>
+  <p id="finalNote"></p>
+
+  <textarea id="reply" placeholder="You can tell me how you feel..."></textarea>
+  <button onclick="sendEmail()">Send to me 💌</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+<script>
+  // ✍️ WRITE YOUR MESSAGES HERE
+  const smallText = "sorry jee😔 ";
+  const bigText = "namaste divyanka, i am just here to say sorry to u for last night you were kept pushing me and here i am being the biggest dumb person couldnt understand u i am reallyy sorry for being annoying and disturbing ur personal space i shouldnt have done it but yea if i had did it so i have to say sorry for it, And yeahhh i just cant be rude with u like for me being rude is being silent not saying anything, honestly i dont know the reason why you ur mood were off but i hope it wasnt cuz of me and if it was me soo reallyyy sorryyy, everything in this life is temporary you live it for once so if the things are good and u are happy with it so enjoy the moment as it wouldnt last forever and if the things arent going good so still dont worry things wouldnt last forever. And yeahh sorry but khush raha divyanka jee app pr gussa nae jagta, and you arent bad blke u are good sweet and kind, so enjoy ur life as it wouldnt last forever ";
+  const finalText = "i hope so ajj apka mood acha hoga😓";
+
+  // typing effect
+  function typeText(element, text, speed = 30) {
+    let i = 0;
+    element.innerHTML = "";
+    function typing() {
+      if (i < text.length) {
+        element.innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typing, speed);
+      }
+    }
+    typing();
+  }
+
+  // initialize text
+  window.onload = () => {
+    typeText(document.getElementById("smallNote"), smallText);
+    createHearts();
+  };
+
+  function nextStep(step) {
+    document.getElementById("step" + step).classList.add("hidden");
+    document.getElementById("step" + (step + 1)).classList.remove("hidden");
+
+    if (step === 1) {
+      typeText(document.getElementById("bigNote"), bigText);
+    }
+    if (step === 2) {
+      typeText(document.getElementById("finalNote"), finalText);
+    }
+  }
+
+  // 💖 floating hearts
+  function createHearts() {
+    setInterval(() => {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.innerHTML = "💖";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.fontSize = (Math.random() * 20 + 10) + "px";
+      document.body.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 4000);
+    }, 500);
+  }
+
+  // EmailJS
+  (function(){
+    emailjs.init("cIUz0doTPfb6yWPt6");
+  })();
+
+  function sendEmail() {
+    let message = document.getElementById("reply").value;
+
+    if (!message) {
+      alert("dont leave without speaking yourself 💭");
+      return;
+    }
+
+    let params = {
+      message: message
+    };
+
+    emailjs.send("service_o7eijhj", "template_f7vodgo", params)
+      .then(function() {
+        alert("She sent it 💌✨");
+      }, function() {
+        alert("Something went wrong ❌");
+      });
+  }
+</script>
+
+</body>
+</html>
